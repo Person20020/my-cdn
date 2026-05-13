@@ -77,6 +77,8 @@ def not_found(e):
 
 @app.route("/slack/events", meathods=["POST"])
 def slack_events_test(event):
+    if "challenge" in event:
+        return event.get("challenge"), 200
     print(event)
     return "", 200
 
@@ -87,6 +89,9 @@ def slack_events(event):
         headers=dict(flask.request.headers),
     ):
         return "Invalid signature", 403
+
+    if "challenge" in event:
+        return event.get("challenge"), 200
 
     logger.info(event)
 
