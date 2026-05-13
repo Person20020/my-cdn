@@ -1,4 +1,4 @@
-name: journals
+name: my-simple-cdn
 
 services:
   web:
