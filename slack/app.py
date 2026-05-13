@@ -40,6 +40,17 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+# Check if in upload channel
+try:
+    response = slack_client.conversations_info(channel=UPLOAD_CHANNEL_ID)
+    if not response.get("channel", {}).get("is_member", False):
+        logger.info(
+            f"Bot is not a member of channel {UPLOAD_CHANNEL_ID}, attempting to join..."
+        )
+        join_response = slack_client.conversations_join(channel=UPLOAD_CHANNEL_ID)
+except SlackApiError as e:
+    raise ValueError(f"Slack API error: {e.response['error']}")
+
 app = flask.Flask(__name__)
 
 

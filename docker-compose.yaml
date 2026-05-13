@@ -21,6 +21,11 @@ services:
       timeout: 5s
       retries: 5
       start_period: 30s
+    environment:
+      - SLACK_BOT_TOKEN=${SLACK_BOT_TOKEN}
+      - SLACK_SIGNING_SECRET=${SLACK_SIGNING_SECRET}
+      - UPLOAD_CHANNEL_ID=${UPLOAD_CHANNEL_ID}
+      - OWNER_USER_ID=${OWNER_USER_ID}
 
 volumes:
   data:
