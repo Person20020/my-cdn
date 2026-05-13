@@ -1,7 +1,7 @@
 name: my-simple-cdn
 
 services:
-  web:
+  slack:
     build: ./slack
     volumes:
       - data:/app/data
