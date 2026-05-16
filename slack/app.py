@@ -76,7 +76,8 @@ def not_found(e):
 
 
 @app.route("/slack/events", methods=["POST"])
-def slack_events_test(event):
+def slack_events_test():
+    event = flask.request.get_json()
     if "challenge" in event:
         return event.get("challenge"), 200
     print(event)
