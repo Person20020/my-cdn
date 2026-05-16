@@ -75,7 +75,7 @@ def not_found(e):
     return flask.Response("Not Found", status=404, mimetype="text/plain")
 
 
-@app.route("/slack/events", meathods=["POST"])
+@app.route("/slack/events", methods=["POST"])
 def slack_events_test(event):
     if "challenge" in event:
         return event.get("challenge"), 200
