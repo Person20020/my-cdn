@@ -59,28 +59,12 @@ def index():
     return flask.Response("Online", status=200, mimetype="text/plain")
 
 
-@app.route("/health")
-def health():
-    return flask.jsonify(
-        {
-            "status": "ok",
-            "commit": short_commit,
-            "uptime": str(datetime.timedelta(seconds=int(time.time() - start_time))),
-        }
-    )
-
-
-@app.errorhandler(404)
-def not_found(e):
-    return flask.Response("Not Found", status=404, mimetype="text/plain")
-
-
 @app.route("/slack/events", methods=["POST"])
 def slack_events_test():
     event = flask.request.get_json()
+    logger.info(event)
     if "challenge" in event:
         return event.get("challenge"), 200
-    print(event)
     return "", 200
 
 
@@ -132,36 +116,20 @@ def slack_events(event):
     return "", 200
 
 
-# @app.route("/slack/command", methods=["POST"])
-# def slack_commands():
-#     if not signature_verifier.is_valid_request(
-#         body=flask.request.get_data().decode("utf-8"),
-#         headers=dict(flask.request.headers),
-#     ):
-#         return "Invalid signature", 403
+@app.route("/health")
+def health():
+    return flask.jsonify(
+        {
+            "status": "ok",
+            "commit": short_commit,
+            "uptime": str(datetime.timedelta(seconds=int(time.time() - start_time))),
+        }
+    )
 
-#     try:
-#         data = flask.request.form
-#         command = data["command"]
-#         text = data["text"]
-#         channel_id = data["channel_id"]
-#         user_id = data["user_id"]
 
-#         if command == "":
-#             return "", 200
-#         else:
-#             logger.warning(f"Received unknown command: {command}")
-#             slack_client.chat_postEphemeral(
-#                 user=user_id,
-#                 channel=channel_id,
-#                 text=f"Unknown command: {command}",
-#             )
-#             return "", 200
-
-#     except Exception as e:
-#         logger.warning(e)
-
-#     return "", 200
+@app.errorhandler(404)
+def not_found(e):
+    return flask.Response("Not Found", status=404, mimetype="text/plain")
 
 
 if __name__ == "__main__":
